@@ -1,0 +1,82 @@
+[tool.poetry]
+name = "udacity_courses"
+version = "0.1.0"
+description = "Udacity Courses Repo"
+authors = ["Heribert Roig"]
+#readme = "README.md"
+
+[tool.poetry.dependencies]
+python = " >=3.10.6"
+numpy = ">=1.23.5"
+pandas = ">=1.4.1"
+scikit-learn = "^1.2.2"
+matplotlib = "^3.7.1"
+
+[tool.poetry.group.dev.dependencies]
+# Linting, tests
+mypy = "^1.1.1"
+black = "^23.1.0"
+types-pyyaml="^6.0.12.8"
+pylint = "^2.17.1"
+pre-commit = "^3.1.1"
+pytest = "^7.2.2"
+pytest-cov = "^4.0.0"
+pytest-env = "^0.8.2"
+flake8 = "^6.0.0"
+envyaml = "^1.10"
+jupyter = "^1.0.0"
+sqlfluff = "^2.1.4"
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile="black"
+
+[tool.flake8]
+exclude = ".venv"
+extend-ignore = ["E203", "E266", "E501", "B008", "C901", "W503", "F401", "F841"]
+max-line-length = 120
+max-cognitive-complexity = 12
+select = ["B", "C", "E", "F", "W", "T4", "B9"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-p no:warnings"
+testpaths = [
+    "tests",
+]
+env = [
+    "AWS_REGION = us-east-1"
+]
+
+[build-system]
+requires = ["poetry-core>=1.4.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+# In pre-commit, you need to specifcy the path to the pyproject.toml in args: args: [--config-file=pyproject.toml]
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+allow_redefinition = true
+
+[[tool.mypy.overrides]]
+module = ["absl.*", "sqlalchemy.*", "boto3.*", "botocore.*", "pandas.*",
+    "psycopg2.*", "glom.*", "yaml.*", "requests.*", "langchain.*",
+    "pydantic.*", "click.*", "omegaconf.*", "numpy.*", "pytest.*"]
+ignore_missing_imports = true
+
+[tool.sqlfluff.core]
+dialect = "postgres"
+output_line_length = 120
+max_line_length = 120
+sql_file_exts = ".sql,.sql.j2,.dml,.ddl"
+
+[tool.sqlfluff.rules.capitalisation.keywords]
+capitalisation_policy = "upper"
