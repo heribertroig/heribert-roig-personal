@@ -3,14 +3,16 @@ name = "udacity_courses"
 version = "0.1.0"
 description = "Udacity Courses Repo"
 authors = ["Heribert Roig"]
-#readme = "README.md"
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = " >=3.10.6"
 numpy = ">=1.23.5"
-pandas = ">=1.4.1"
+pandas = ">=1.4.1,<1.5.0"
 scikit-learn = "^1.2.2"
 matplotlib = "^3.7.1"
+seaborn = "*"
+statsmodels = "*"
 
 [tool.poetry.group.dev.dependencies]
 # Linting, tests
