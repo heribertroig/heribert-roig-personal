@@ -7,7 +7,7 @@ Engaging with the Boston Airbnb dataset offers a captivating journey into the dy
 
 The **Business Questions** that this project aims to answer are:
 
-1 - Which neighborhoods are the most popular in Boston?            
+1 - Which Boston neighbourhoods has the greatest accommodations offer? Which is the most touristy one?            
 2 - Which neighborhoods in Boston are the most expensive?          
 3 - What property types are the most popular in Boston?            
 4 - How are listings in Boston distributed in terms of price?      
