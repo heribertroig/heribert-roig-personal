@@ -1,6 +1,9 @@
 # Node artifact files
-udacity_courses/CRISP_DM
+udacity_courses/lessons
+udacity_courses/project_files
 
 .idea/
 
 .DS_Store
+
+*.pkl
