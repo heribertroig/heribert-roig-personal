@@ -16,10 +16,10 @@ web_application/: contains the files needed for the web app.
 
 ## Instructions
 To process data:
-1. Run the following command in `udacity_courses/project_3/web_application` to set up your database and model data.
-    - To run ETL pipeline that cleans data and stores in database: `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
-2. Run the following command in `udacity_courses/project_3/web_application` to train the model and save it.
-    - To run ML pipeline that trains classifier and saves: `python models/train_classifier.py ../data/DisasterResponse.db classifier.pkl`, which will generate `models/classifier.pkl`
+1. Run the following command in to set up your database and model data.
+    - To run ETL pipeline that cleans data and stores in database: `python udacity_courses/project_3/web_application/data/process_data.py udacity_courses/project_3/web_application/data/disaster_messages.csv udacity_courses/project_3/web_application/data/disaster_categories.csv udacity_courses/project_3/web_application/data/DisasterResponse.db`
+2. Run the following command in `udacity_courses/project_3/web_application/` to train the model and save it.
+    - To run ML pipeline that trains classifier and saves: `python udacity_courses/project_3/web_application/models/train_classifier.py ../data/DisasterResponse.db classifier.pkl`, which will generate `udacity_courses/project_3/web_application/models/classifier.pkl`
 
 To run the web app:
 1. Run the following command in the app's directory to run your web app.

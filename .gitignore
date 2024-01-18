@@ -7,3 +7,5 @@ udacity_courses/project_files
 .DS_Store
 
 *.pkl
+
+*.pyc

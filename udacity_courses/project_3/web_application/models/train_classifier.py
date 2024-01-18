@@ -24,7 +24,6 @@ def main():
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         train_classifier = TrainClassifier(database_filepath=database_filepath, sample=True)
 
-        print('Loading data...')
         train_classifier.load_data()
 
         print('Preprocessing data...')
