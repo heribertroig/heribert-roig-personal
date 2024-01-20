@@ -2,8 +2,6 @@ import sys
 from udacity_courses.project_3.scripts.process_data import ETL
 
 
-
-
 def load_data(messages_filepath, categories_filepath, etl):
     df = etl.load_data(messages_filepath, categories_filepath)
     return df
