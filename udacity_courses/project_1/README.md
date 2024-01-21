@@ -1,5 +1,4 @@
 # PROJECT 1: Writing a Data Science Blog Post - Discovering the Airbnb Market in Boston
-This is the readme that should be moved into the Project folder
 
 
 ## Project Motivation

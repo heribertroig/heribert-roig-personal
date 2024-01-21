@@ -9,3 +9,5 @@ udacity_courses/project_files
 *.pkl
 
 *.pyc
+
+*.db

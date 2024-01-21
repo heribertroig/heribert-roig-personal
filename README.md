@@ -18,7 +18,8 @@ In the pyproject.toml file, you can also find the python version used for this p
 ## Projects
 
 ### Project 1: [Project 1: Writing a Data Scientist Blog Post](udacity_courses/project_1/)
-Description: Briefly describe the first project and its purpose.
+
+### Project 3: [Disaster Response Pipeline Project](udacity_courses/project_3/)
 
 ## Getting Started
 Each project directory contains its own README.md file with specific instructions on how to run the code, replicate the analysis, or explore the results. Follow the instructions in each project's README to get started.
