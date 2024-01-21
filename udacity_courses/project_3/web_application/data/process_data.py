@@ -5,8 +5,10 @@ import sys
 import pandas as pd
 
 
+# Code also present in udacity_courses/project_3/scripts/process_data.py. Need to find why it can't be imported by
+# udacity reviewers
 class ETL:
-    # Code also present in udacity_courses/project_3/scripts/process_data.py
+    """ETL class to load, clean and save data to database"""
     def __init__(self, messages_filepath: str = "data/messages.csv",
                  categories_filepath: str = "data/categories.csv"):
         self.messages = pd.read_csv(messages_filepath)
@@ -14,18 +16,35 @@ class ETL:
         self.df = pd.DataFrame()
 
     def run(self):
+        """
+        Run the ETL process
+        Returns:
+            None
+        """
         self.merge_dataframes()
-        self.split_categories()
-        self.remove_duplicates()
+        self.split_categories(self.df)
+        self.remove_duplicates(self.df)
         self.save_to_db()
 
     def merge_dataframes(self):
+        """
+        Merge messages and categories dataframes
+        Returns:
+            df: merged dataframe
+        """
         df = pd.merge(self.messages, self.categories, how="inner", on="id")
         self.df = df
         return df
 
-    def split_categories(self):
-        df = self.df
+    def split_categories(self, df):
+        """
+        Split categories column into separate columns
+        Args:
+            df: dataframe to split categories from
+        Returns:
+            df: dataframe with categories split into separate columns
+        """
+        df = df.copy()
         categories = (df["categories"].apply(lambda x: dict(item.split('-') for item in x.split(';')))).apply(pd.Series)
         categories = categories.astype(int)
         categories = categories.fillna(0)
@@ -34,45 +53,105 @@ class ETL:
         self.df = df
         return df
 
-    def remove_duplicates(self):
-        df = self.df
+    def remove_duplicates(self, df: pd.DataFrame):
+        """
+        Remove duplicates from dataframe
+        Args:
+            df: dataframe to remove duplicates from
+        Returns:
+            df: dataframe without duplicates
+        """
+        df = df.copy()
         subset_columns = [col for col in df.columns if col != "id"]
         df.drop_duplicates(subset=subset_columns, inplace=True)
         self.df = df
         return df
 
     def save_to_db(self):
+        """
+        Save dataframe to database
+        Returns:
+            None
+        """
         conn = sqlite3.connect('../data/messages_categories.db')
         self.df.to_sql('clean_data', con=conn, if_exists='replace', index=False)
 
     def load_data(self, messages_filepath, categories_filepath):
+        """
+        Load data from csv files
+        Args:
+            messages_filepath: filepath of the messages csv file
+            categories_filepath: filepath of the categories csv file
+
+        Returns:
+            df: merged dataframe
+        """
         self.messages = pd.read_csv(messages_filepath, encoding='latin-1')
         self.categories = pd.read_csv(categories_filepath)
         df = self.merge_dataframes()
         return df
 
     def clean_data(self, df):
-        df = self.split_categories()
-        df = self.remove_duplicates()
+        """
+        Perform data cleaning on dataframe
+        Args:
+            df: dataframe to clean
+        Returns:
+            df: cleaned dataframe
+        """
+        df = self.split_categories(df)
+        df = self.remove_duplicates(df)
         return df
 
     @staticmethod
     def save_data(df, database_filename):
+        """
+        Save dataframe to database
+        Args:
+            df: dataframe to save
+            database_filename: database filename to save dataframe to
+        Returns:
+            None
+        """
         conn = sqlite3.connect(database_filename)
         df.to_sql('clean_data', con=conn, if_exists='replace', index=False)
 
 
 def load_data(messages_filepath, categories_filepath, etl):
+    """
+    Load data from csv files
+    Args:
+        messages_filepath: filepath where the messages csv file is located
+        categories_filepath: filepath where the categories csv file is located
+        etl: ETL object
+    Returns:
+        df: merged dataframe
+    """
     df = etl.load_data(messages_filepath, categories_filepath)
     return df
 
 
 def clean_data(df, etl):
+    """
+    Perform data cleaning on dataframe
+    Args:
+        df: dataframe to clean
+    Returns:
+        df: cleaned dataframe
+    """
     df = etl.clean_data(df)
     return df
 
 
 def save_data(df, database_filename, etl):
+    """
+    Save dataframe to database
+    Args:
+        df: dataframe to save
+        database_filename: database filename to save dataframe to
+    Returns:
+        None
+    """
     etl.save_data(df, database_filename)
 
 

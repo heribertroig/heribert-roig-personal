@@ -5,14 +5,9 @@
 The aim of this project is to build a model for an API that classifies disaster messages. The dataset contains real messages that were sent during disaster events. A machine learning pipeline is created to categorize these events so that the messages can be sent to an appropriate disaster relief agency. The project also includes a web app where an emergency worker can input a new message and get classification results in several categories. The web app also displays visualizations of the data.
 
 ## File Descriptions
-
-data/: Contains the datasets used in the project.
-
-scripts/: contains the 2 scripts used for the project.
-
 notebooks/: contains the notebooks used for the project.
 
-web_application/: contains the files needed for the web app.
+web_application/: contains the files needed for the web app, including the data, the model, and the code for the web app.
 
 ## Installations
 In the repository's [README.md](../../README.md) file, you can find the python version used for this project (3.10.6), and how to install the dependencies using poetry.

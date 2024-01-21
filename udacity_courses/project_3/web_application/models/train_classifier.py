@@ -26,6 +26,9 @@ from sklearn.preprocessing import OneHotEncoder
 
 
 class TrainClassifier:
+    """
+    This class is used to train a classifier on the data in the database_filepath.
+    """
     # Code also present in udacity_courses/project_3/scripts/train_classifier.py
 
     def __init__(self, database_filepath: str, sample: bool = True, x_cols: List[str] = ["message"],
@@ -44,6 +47,11 @@ class TrainClassifier:
         self.data = pd.DataFrame()
 
     def run(self):
+        """
+        Run the training process
+        Returns:
+            None
+        """
         self.load_data()
         self.preprocess_data()
         self.train_test_split()
@@ -57,6 +65,12 @@ class TrainClassifier:
         self.save_model()
 
     def preprocess_data(self) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        """
+        Preprocess the data
+        Returns:
+            X: features
+            y: labels
+        """
         # This sample is to reduce the size of the data for faster training
         if self.sample:
             data = self.data.sample(frac=0.1, random_state=42)
@@ -69,6 +83,11 @@ class TrainClassifier:
         return self.X, self.y
 
     def build_pipeline(self):
+        """
+        Build the pipeline
+        Returns:
+            pipeline: pipeline to train the model
+        """
         preprocessor = ColumnTransformer(
             transformers=[
                 ('text', Pipeline([
@@ -86,9 +105,22 @@ class TrainClassifier:
         return pipeline
 
     def train_classifier(self):
+        """
+        Train the classifier
+        Returns:
+            None
+        """
         self.pipeline.fit(self.X_train, self.y_train)
 
     def train_test_split(self):
+        """
+        Split the data into training and testing sets
+        Returns:
+            X_train: training features
+            X_test: testing features
+            y_train: training labels
+            y_test: testing labels
+        """
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y, test_size=0.2,
                                                                                 random_state=42)
         print(f"X_train shape: {self.X_train.shape}")
@@ -98,11 +130,24 @@ class TrainClassifier:
         return self.X_train, self.X_test, self.y_train, self.y_test
 
     def evaluate_model(self):
+        """
+        Evaluate the model
+        Returns:
+            None
+        """
         y_predict = self.pipeline.predict(self.X_test)
         y_predict = pd.DataFrame(y_predict, columns=self.y_test.columns)
         display_results(self.y_test, y_predict)
 
     def tune_model(self, pipeline: Pipeline, parameters: Dict[str, Any]):
+        """
+        Tune the model using grid search
+        Args:
+            pipeline: model pipeline
+            parameters: dictionary of parameters to use in the grid search
+        Returns:
+            None
+        """
         model = grid_search(pipeline, parameters)
         model.fit(self.X_train, self.y_train)
         y_predict = model.predict(self.X_test)
@@ -112,6 +157,14 @@ class TrainClassifier:
         self.model = model
 
     def save_model(self, model=None, model_filepath: str = '../models/trained_pipeline.pkl'):
+        """
+        Save the model to a pickle file
+        Args:
+            model: model used to train the data
+            model_filepath: filepath to save the model to
+        Returns:
+            None
+        """
         filename = model_filepath
         if not model:
             model = self.pipeline
@@ -119,17 +172,36 @@ class TrainClassifier:
             pickle.dump(model, file)
 
     def load_model(self, model_filepath: str = '../models/trained_pipeline.pkl'):
+        """
+        Load the model from a pickle file
+        Args:
+            model_filepath: filepath to load the model from
+        Returns:
+            pipeline: pipeline used to train the model
+        """
         with open(model_filepath, 'rb') as file:
             pipeline = pickle.load(file)
         self.pipeline = pipeline
         return pipeline
 
     def predict(self, text: str):
+        """
+        Predict the category of a message
+        Args:
+            text: text of the message to predict the category of
+        Returns:
+            y_predict: predicted category of the message
+        """
         text_df = pd.DataFrame([text], columns=["message"])
         y_predict = self.pipeline.predict(text_df)
         return y_predict
 
     def load_data(self) -> pd.DataFrame:
+        """
+        Load the data from the database
+        Returns:
+            data: dataframe of the data
+        """
         conn = sqlite3.connect(self.database_filepath)
         sqlquery = """SELECT * FROM clean_data"""
         data = pd.read_sql(sqlquery, con=conn)
@@ -138,6 +210,13 @@ class TrainClassifier:
 
 
 def tokenize(text):
+    """
+    Tokenize the text
+    Args:
+        text: message text to tokenize
+    Returns:
+        clean_tokens: list of tokens
+    """
     text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
@@ -153,6 +232,14 @@ def tokenize(text):
 
 
 def display_results(y_test, y_pred):
+    """
+    Display the metrics (accuracy, precision, recall and f1) of the model
+    Args:
+        y_test: actual labels
+        y_pred: predicted labels
+    Returns:
+        dictionary of accuracies, precisions, recalls and f1 scores
+    """
     accuracies = {}
     precisions = {}
     recalls = {}
@@ -196,6 +283,14 @@ def display_results(y_test, y_pred):
 
 
 def grid_search(pipeline, parameters):
+    """
+    Perform grid search on the pipeline
+    Args:
+        pipeline: pipeline to perform grid search on
+        parameters: dictionary of parameters to use in the grid search
+    Returns:
+        cv: grid search object
+    """
     # create grid search object
     cv = GridSearchCV(pipeline, parameters)
 
@@ -203,6 +298,11 @@ def grid_search(pipeline, parameters):
 
 
 def build_pipeline():
+    """
+    Build the pipeline
+    Returns:
+        pipeline: pipeline to train the model
+    """
     preprocessor = ColumnTransformer(
         transformers=[
             ('message', Word2VecVectorizer(), ['message']),
@@ -219,6 +319,9 @@ def build_pipeline():
 
 
 class Word2VecVectorizer(BaseEstimator, TransformerMixin):
+    """
+    Vectorize the text using word2vec
+    """
     def __init__(self, size=100, window=5, min_count=1, workers=4):
         self.size = size
         self.window = window
@@ -227,12 +330,28 @@ class Word2VecVectorizer(BaseEstimator, TransformerMixin):
         self.model = None
 
     def fit(self, X, y=None):
+        """
+        Fit the model
+        Args:
+            X: dataframe of messages
+            y: dataframe of labels or None. Not used in this function
+
+        Returns:
+            self: fitted model
+        """
         messages = X.apply(lambda row: tokenize(row["message"]), axis=1)
         self.model = Word2Vec(sentences=messages, vector_size=self.size, window=self.window,
                               min_count=self.min_count, workers=self.workers)
         return self
 
     def transform(self, X):
+        """
+        Transform the input DataFrame using the fitted Word2Vec model.
+        Args:
+            X: DataFrame of messages to be transformed.
+        Returns:
+            vectors: Array of transformed message vectors.
+        """
         vectors = []
         for _, row in X.iterrows():
             message = word_tokenize(row['message'])
@@ -247,6 +366,13 @@ class Word2VecVectorizer(BaseEstimator, TransformerMixin):
 
 @staticmethod
 def build_database_filepath(database_filepath: str) -> str:
+    """
+    Build the database filepath
+    Args:
+        database_filepath: database filepath
+    Returns:
+        final_path: final database filepath
+    """
     src_directory = Path(__file__).resolve().parent.parent
 
     # Ensure src_directory includes 'web_application'
