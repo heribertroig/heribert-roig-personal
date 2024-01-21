@@ -23,6 +23,7 @@ class ETL:
         """
         self.merge_dataframes()
         self.split_categories(self.df)
+        self.drop_wrong_values(self.df)
         self.remove_duplicates(self.df)
         self.save_to_db()
 
@@ -33,6 +34,21 @@ class ETL:
             df: merged dataframe
         """
         df = pd.merge(self.messages, self.categories, how="inner", on="id")
+        self.df = df
+        return df
+
+    def drop_wrong_values(self, df):
+        """
+        Drop rows with wrong values
+        Args:
+            df: dataframe to drop rows from
+        Returns:
+            df: dataframe without wrong values
+        """
+        df = df.copy()
+        for col in df.columns:
+            if col not in ["id", "message", "original", "genre"]:
+                df = df[df[col].isin([0, 1])]
         self.df = df
         return df
 
@@ -100,6 +116,7 @@ class ETL:
             df: cleaned dataframe
         """
         df = self.split_categories(df)
+        df = self.drop_wrong_values(df)
         df = self.remove_duplicates(df)
         return df
 
@@ -118,9 +135,13 @@ class ETL:
 
 
 def main():
-    if len(sys.argv) == 4:
+    if True:
+    # if len(sys.argv) == 4:
 
-        messages_filepath, categories_filepath, database_filepath = sys.argv[1:]
+        # messages_filepath, categories_filepath, database_filepath = sys.argv[1:]
+        messages_filepath = "disaster_messages.csv"
+        categories_filepath = "disaster_categories.csv"
+        database_filepath = "DisasterResponse.db"
 
         print('Loading data...\n    MESSAGES: {}\n    CATEGORIES: {}'
               .format(messages_filepath, categories_filepath))
