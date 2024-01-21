@@ -1,6 +1,7 @@
 # Node artifact files
 udacity_courses/lessons
 udacity_courses/project_files
+udacity_courses/project_3/scripts
 
 .idea/
 
@@ -11,5 +12,3 @@ udacity_courses/project_files
 *.pyc
 
 *.db
-
-udacity_courses/project_3/scripts
