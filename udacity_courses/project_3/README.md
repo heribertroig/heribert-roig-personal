@@ -21,5 +21,5 @@ To process data:
     - To run ML pipeline that trains classifier and saves: `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`, which will generate `udacity_courses/project_3/web_application/models/classifier.pkl`
 
 To run the web app:
-1. Run the following command in the app's directory to run your web app.
+1. Run the following command in the app's directory to run your web app(`udacity_courses/project_3/web_application/app`).
     - `python run.py`

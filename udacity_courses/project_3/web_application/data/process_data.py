@@ -117,44 +117,6 @@ class ETL:
         df.to_sql('clean_data', con=conn, if_exists='replace', index=False)
 
 
-def load_data(messages_filepath, categories_filepath, etl):
-    """
-    Load data from csv files
-    Args:
-        messages_filepath: filepath where the messages csv file is located
-        categories_filepath: filepath where the categories csv file is located
-        etl: ETL object
-    Returns:
-        df: merged dataframe
-    """
-    df = etl.load_data(messages_filepath, categories_filepath)
-    return df
-
-
-def clean_data(df, etl):
-    """
-    Perform data cleaning on dataframe
-    Args:
-        df: dataframe to clean
-    Returns:
-        df: cleaned dataframe
-    """
-    df = etl.clean_data(df)
-    return df
-
-
-def save_data(df, database_filename, etl):
-    """
-    Save dataframe to database
-    Args:
-        df: dataframe to save
-        database_filename: database filename to save dataframe to
-    Returns:
-        None
-    """
-    etl.save_data(df, database_filename)
-
-
 def main():
     if len(sys.argv) == 4:
 
@@ -163,13 +125,13 @@ def main():
         print('Loading data...\n    MESSAGES: {}\n    CATEGORIES: {}'
               .format(messages_filepath, categories_filepath))
         etl_ = ETL(messages_filepath, categories_filepath)
-        df = load_data(messages_filepath, categories_filepath, etl_)
+        df = etl_.load_data(messages_filepath, categories_filepath)
 
         print('Cleaning data...')
-        df = clean_data(df, etl_)
+        df = etl_.clean_data(df)
 
         print('Saving data...\n    DATABASE: {}'.format(database_filepath))
-        save_data(df, database_filepath, etl_)
+        etl_.save_data(df, database_filepath)
 
         print('Cleaned data saved to database!')
 
