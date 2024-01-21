@@ -7,6 +7,29 @@ The projects that I keep doing will be added in this repository
 ## Overview
 This repository serves as a portfolio showcasing my data science and machine learning projects. Each project is organized into its own directory, containing code, documentation, and other relevant files.
 
+## Repository Structure
+```
+├── udacity_courses
+│ ├── project_1
+│ │ ├── data
+│ │ │ └── airbnb_boston
+│ │ ├── features
+│ │ ├── notebooks
+│ │ ├── utils
+│ │ ├── README.md
+│ ├── project_3
+│ │ ├── notebooks
+│ │ ├── web_application
+│ │ │ └── app
+│ │ │   └── templates
+│ │ │ ├── data
+│ │ │ ├── models
+│ │ │ ├── README.md
+│ │ ├── README.md
+└── README.md
+```
+
+
 ## Installations
 The repository uses [Poetry](https://python-poetry.org/) and is configured with `pyproject.toml`. To install the dependencies, you need to install poetry and the run the poetry install, which will install all the libraries described in the [pyproject.toml](pyproject.toml)
 ```bash
